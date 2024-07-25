@@ -78,14 +78,14 @@ final class YPAssetViewContainer: UIView {
         curtain.backgroundColor = UIColor.ypLabel.withAlphaComponent(0.7)
         curtain.alpha = 0
 
-        if !onlySquare {
-            // Crop Button
-            squareCropButton.setImage(YPConfig.icons.cropIcon, for: .normal)
-            subviews(squareCropButton)
-            squareCropButton.size(42)
-            |-15-squareCropButton
-            squareCropButton.Bottom == self.Bottom - 15
-        }
+//        if !onlySquare {
+//            // Crop Button
+//            squareCropButton.setImage(YPConfig.icons.cropIcon, for: .normal)
+//            subviews(squareCropButton)
+//            squareCropButton.size(42)
+//            |-15-squareCropButton
+//            squareCropButton.Bottom == self.Bottom - 15
+//        }
 
         // Multiple selection button
         subviews(multipleSelectionButton)

@@ -154,14 +154,14 @@ final class YPAssetZoomableView: UIScrollView {
         clipsToBounds = true
         photoImageView.frame = CGRect(origin: CGPoint.zero, size: CGSize.zero)
         videoView.frame = CGRect(origin: CGPoint.zero, size: CGSize.zero)
-        maximumZoomScale = 6.0
-        minimumZoomScale = 1
+        maximumZoomScale = 1.0
+        minimumZoomScale = 1.0
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
         delegate = self
         alwaysBounceHorizontal = true
         alwaysBounceVertical = true
-        isScrollEnabled = true
+        isScrollEnabled = false
     }
 
     required init?(coder aDecoder: NSCoder) {
