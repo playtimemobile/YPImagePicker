@@ -38,6 +38,9 @@ public struct YPImagePickerConfiguration {
     /// Video configuration
     public var video = YPConfigVideo()
     
+    /// Video orientation
+    public var orientation = 0
+    
     /// Gallery configuration
     public var gallery = YPConfigSelectionsGallery()
     

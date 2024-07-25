@@ -188,7 +188,14 @@ internal final class YPLibraryView: UIView {
         line.height(0)
         line.fillHorizontally()
 
-        assetViewContainer.top(0).fillHorizontally().height(200)
+        var width = self.frame.size.width
+        var height = (width/16)*9
+        if (YPConfig.orientation == 1) {
+            // Vertical
+            width = (self.frame.size.width/3)*2
+            height = (width/9)*16
+        }
+        assetViewContainer.top(0).width(width).height(height)
         
         
         self.assetViewContainerConstraintTop = assetViewContainer.topConstraint
