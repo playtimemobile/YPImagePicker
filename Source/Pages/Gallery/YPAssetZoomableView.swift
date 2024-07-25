@@ -25,8 +25,6 @@ final class YPAssetZoomableView: UIScrollView {
     public var squaredZoomScale: CGFloat = 1
     public var minWidthForItem: CGFloat? = YPConfig.library.minWidthForItem
     
-    public var assetType = 0  // 0: Portrait, 1: Landscape, 2: Square
-    
     fileprivate var currentAsset: PHAsset?
     
     // Image view of the asset for convenience. Can be video preview image view or photo image view.
@@ -273,19 +271,8 @@ extension YPAssetZoomableView: UIScrollViewDelegate {
         guard let view = view, view == photoImageView || view == videoView else { return }
         
         // prevent to zoom out
-//        if YPConfig.library.onlySquare && scale < squaredZoomScale {
-//            self.fitImage(true, animated: true)
-//        }
-        
-        // Add here:
-        if self.assetType == 0 {
-            if scale < squaredZoomScale * 0.8 {
-                fitImage(false, animated: true)
-            }
-        } else if self.assetType == 1 {
-            if scale < squaredZoomScale * 0.5235602094240838 {
-                fitImage(false, animated: true)
-            }
+        if YPConfig.library.onlySquare && scale < squaredZoomScale {
+            self.fitImage(true, animated: true)
         }
         
         zoomableViewDelegate?.ypAssetZoomableViewScrollViewDidEndZooming()
