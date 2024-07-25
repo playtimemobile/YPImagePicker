@@ -43,7 +43,13 @@ final class YPAssetZoomableView: UIScrollView {
         if fit {
             setZoomScale(squaredZoomScale, animated: isAnimated)
         } else {
-            setZoomScale(1, animated: isAnimated)
+            if self.assetType == 0 {
+                setZoomScale(squaredZoomScale * 0.8, animated: isAnimated)
+            } else if self.assetType == 1 {
+                setZoomScale(squaredZoomScale * 0.5235602094240838, animated: isAnimated)
+            } else if self.assetType == 2 {
+                setZoomScale(1, animated: isAnimated)
+            }
         }
     }
     
@@ -199,6 +205,7 @@ fileprivate extension YPAssetZoomableView {
             aspectRatio = h / w
             view.frame.size.width = screenWidth
             view.frame.size.height = screenWidth * aspectRatio
+            self.assetType = 1 // -> Here
         } else if h > w { // Portrait
             aspectRatio = w / h
             view.frame.size.width = screenWidth * aspectRatio
@@ -208,9 +215,11 @@ fileprivate extension YPAssetZoomableView {
                 let k = minWidth / screenWidth
                 zoomScale = (h / w) * k
             }
+            self.assetType = 0 // -> Here
         } else { // Square
             view.frame.size.width = screenWidth
             view.frame.size.height = screenWidth
+            self.assetType = 2 // -> Here
         }
         
         // Centering image view
