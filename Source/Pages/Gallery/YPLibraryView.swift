@@ -192,12 +192,12 @@ internal final class YPLibraryView: UIView {
         if (YPConfig.orientation == 0) {
             // Horizontal
             assetViewContainer.fillHorizontally()
-            let height = (assetViewContainer.Width/16.0)*9.0
+            let height = Int((assetViewContainer.Width/16.0)*9.0)
             assetViewContainer.height(height)
         } else {
             // Vertical
             assetViewContainer.height(200)
-            let width = (assetViewContainer.Height/16.0)*9.0
+            let width = Int((assetViewContainer.Height/16.0)*9.0)
             assetViewContainer.width(width)
         }
         
