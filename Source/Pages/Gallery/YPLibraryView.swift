@@ -185,12 +185,14 @@ internal final class YPLibraryView: UIView {
         collectionView.fillHorizontally().bottom(0)
 
         assetViewContainer.Bottom == line.Top
-        line.height(1)
+        line.height(0)
         line.fillHorizontally()
 
-        assetViewContainer.top(0).fillHorizontally().heightEqualsWidth()
+        assetViewContainer.top(0).fillHorizontally().height16()
+        
+        
         self.assetViewContainerConstraintTop = assetViewContainer.topConstraint
-        assetZoomableView.fillContainer().heightEqualsWidth()
+        assetZoomableView.fillContainer().followEdges(assetViewContainer, top: 0, bottom: 0, leading: 0, trailing: 0)
         assetZoomableView.Bottom == collectionView.Top
         assetViewContainer.sendSubviewToBack(assetZoomableView)
 
@@ -201,4 +203,5 @@ internal final class YPLibraryView: UIView {
         maxNumberWarningView.Top == safeAreaLayoutGuide.Bottom - 40
         maxNumberWarningLabel.centerHorizontally().top(11)
     }
+    
 }
