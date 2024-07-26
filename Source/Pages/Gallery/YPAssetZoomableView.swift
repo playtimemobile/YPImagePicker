@@ -76,10 +76,6 @@ final class YPAssetZoomableView: UIScrollView {
             strongSelf.videoView.setPreviewImage(preview)
             
             strongSelf.setAssetFrame(for: strongSelf.videoView, with: preview)
-
-            // strongSelf.fillZoomScale = strongSelf.calculateFillZoomScale(view: strongSelf)
-            // strongSelf.setZoomScale(strongSelf.fillZoomScale, animated: false)
-            // print(strongSelf.fillZoomScale)
             
             completion()
             
@@ -227,7 +223,6 @@ fileprivate extension YPAssetZoomableView {
         var offset = contentOffset
         offset.x = -contentInset.left - (scrollWidth - view.frame.size.width) / 2
         offset.y = -contentInset.top - (scrollHeight - view.frame.size.height) / 2
-        print(offset)
         setContentOffset(offset, animated: false)
         
         // Setting new scale
