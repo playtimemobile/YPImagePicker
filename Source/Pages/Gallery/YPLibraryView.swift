@@ -29,6 +29,7 @@ internal final class YPLibraryView: UIView {
     internal lazy var assetViewContainer: YPAssetViewContainer = {
         let v = YPAssetViewContainer(frame: .zero, zoomableView: assetZoomableView)
         v.accessibilityIdentifier = "assetViewContainer"
+        v.backgroundColor = YPConfig.colors.assetViewBackgroundColor
         return v
     }()
     internal let assetZoomableView: YPAssetZoomableView = {
@@ -53,7 +54,7 @@ internal final class YPLibraryView: UIView {
 
     private let line: UIView = {
         let v = UIView()
-        v.backgroundColor = .ypSystemBackground
+        v.backgroundColor = YPConfig.colors.assetViewBackgroundColor
         return v
     }()
     /// When video is processing this bar appears
@@ -185,25 +186,30 @@ internal final class YPLibraryView: UIView {
         collectionView.fillHorizontally().bottom(0)
 
         assetViewContainer.Bottom == line.Top
-        line.height(0)
+        line.height(1)
         line.fillHorizontally()
 
-        assetViewContainer.top(0)
+        assetViewContainer.top(0).fillHorizontally()
         if (YPConfig.orientation == 0) {
             // Horizontal
-            assetViewContainer.fillHorizontally()
-            let height = Int((assetViewContainer.Width/16.0)*9.0)
-            assetViewContainer.height(height)
+            let complementRatio: CGFloat = CGFloat(9.0 / 16.0)
+            assetViewContainer.Height == assetViewContainer.Width * complementRatio
         } else {
             // Vertical
-            assetViewContainer.height(200)
-            let width = Int((assetViewContainer.Height/16.0)*9.0)
-            assetViewContainer.width(width)
+            assetViewContainer.height(300)
         }
         
-        
         self.assetViewContainerConstraintTop = assetViewContainer.topConstraint
-        assetZoomableView.fillContainer().followEdges(assetViewContainer, top: 0, bottom: 0, leading: 0, trailing: 0)
+        // assetZoomableView.fillContainer()
+        if (YPConfig.orientation == 0) {
+            assetZoomableView.followEdges(assetViewContainer, top: 0, bottom: 0, leading: 0, trailing: 0)
+        } else {
+            assetZoomableView.centerHorizontally()
+            let complementRatio: CGFloat = CGFloat(9.0 / 16.0)
+            assetZoomableView.Width == 300 * complementRatio
+            assetZoomableView.Top == assetViewContainer.Top
+            assetZoomableView.Bottom == assetViewContainer.Bottom
+        }
         assetZoomableView.Bottom == collectionView.Top
         assetViewContainer.sendSubviewToBack(assetZoomableView)
 

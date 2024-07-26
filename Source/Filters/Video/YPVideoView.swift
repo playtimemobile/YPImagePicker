@@ -44,10 +44,11 @@ public class YPVideoView: UIView {
         singleTapGR.numberOfTapsRequired = 1
         addGestureRecognizer(singleTapGR)
         
+        playerView.backgroundColor = .black
         playerView.alpha = 0
         playImageView.alpha = 0.8
-        playerLayer.videoGravity = .resizeAspect
-        previewImageView.contentMode = .scaleAspectFit
+        playerLayer.videoGravity = .resizeAspectFill
+        previewImageView.contentMode = .scaleAspectFill
         
         subviews(
             previewImageView,

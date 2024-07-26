@@ -66,6 +66,11 @@ public final class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
         v.button.addTarget(self, action: #selector(selectCover), for: .touchUpInside)
         return v
     }()
+    private let bottomVideoView: UIView = {
+        let v = UIView()
+        v.backgroundColor = YPConfig.colors.assetViewBackgroundColor
+        return v
+    }()
     private let videoView: YPVideoView = {
         let v = YPVideoView()
         return v
@@ -150,6 +155,7 @@ public final class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
         view.subviews(
             trimBottomItem,
             coverBottomItem,
+            bottomVideoView,
             videoView,
             coverImageView,
             trimmerContainerView.subviews(
@@ -165,8 +171,26 @@ public final class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
         coverBottomItem.trailing(0)
         equal(sizes: trimBottomItem, coverBottomItem)
 
-        videoView.heightEqualsWidth().fillHorizontally().top(0)
+        videoView.top(0)
+//        videoView.heightEqualsWidth().fillHorizontally().top(0)
+        if (YPConfig.orientation == 0) {
+            // Horizontal
+            videoView.fillHorizontally()
+            let complementRatio: CGFloat = CGFloat(9.0 / 16.0)
+            videoView.Height == videoView.Width * complementRatio
+            videoView.left(0)
+        } else {
+            // Vertical
+            videoView.height(300)
+            let complementRatio: CGFloat = CGFloat(9.0 / 16.0)
+            videoView.Width == videoView.Height * complementRatio
+            videoView.left((view.frame.size.width-(300*complementRatio))/2)
+        }
         videoView.Bottom == trimmerContainerView.Top
+
+        bottomVideoView.top(0)
+        bottomVideoView.Height == videoView.Height
+        bottomVideoView.fillHorizontally()
 
         coverImageView.followEdges(videoView)
 
@@ -206,8 +230,8 @@ public final class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
                     DispatchQueue.main.async {
                         if let coverImage = self?.coverImageView.image {
                             let resultVideo = YPMediaVideo(thumbnail: coverImage,
-														   videoURL: destinationURL,
-														   asset: self?.inputVideo.asset)
+                                                           videoURL: destinationURL,
+                                                           asset: self?.inputVideo.asset)
                             didSave(YPMediaItem.video(v: resultVideo))
                             self?.setupRightBarButtonItem()
                         } else {
