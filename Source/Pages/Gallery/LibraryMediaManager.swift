@@ -137,7 +137,12 @@ class LibraryMediaManager {
                 // Video Composition
                 let videoComposition = AVMutableVideoComposition(propertiesOf: asset)
                 videoComposition.instructions = [mainInstructions]
-                videoComposition.renderSize = cropRect.size // needed?
+//                videoComposition.renderSize = cropRect.size // needed?
+                if (YPConfig.orientation == 0) {
+                    videoComposition.renderSize = CGSize(width: 1920, height: 1080)
+                } else {
+                    videoComposition.renderSize = CGSize(width: 1080, height: 1920)
+                }
                 
                 // 5. Configuring export session
                 
