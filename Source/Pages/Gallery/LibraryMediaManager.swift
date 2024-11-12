@@ -122,12 +122,37 @@ class LibraryMediaManager {
                 let layerInstructions = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack)
                 var transform = videoTrack.preferredTransform
                 let videoSize = videoTrack.naturalSize.applying(transform)
-                transform.tx = (videoSize.width < 0) ? abs(videoSize.width) : 0.0
-                transform.ty = (videoSize.height < 0) ? abs(videoSize.height) : 0.0
-                transform.tx -= cropRect.minX
-                transform.ty -= cropRect.minY
-                layerInstructions.setTransform(transform, at: CMTime.zero)
-                videoCompositionTrack.preferredTransform = transform
+
+                var exportSize = CGSize(width: 1080, height: 1920)
+                if (YPConfig.orientation == 0) {
+                    exportSize = CGSize(width: 1920, height: 1080)
+                }
+
+                let tx = -cropRect.minX
+                let ty = -cropRect.minY
+                let translationTransform = CGAffineTransform(translationX: tx, y: ty)
+
+                var zoomMultiplyer = 0.0
+                if (YPConfig.orientation == 0) {
+                    if (cropRect.size.width != 1920 || cropRect.size.height != 1080) {
+                        zoomMultiplyer = 1920.0/cropRect.size.width;
+                    }
+                } else {
+                    if (cropRect.size.width != 1080 || cropRect.size.height != 1920) {
+                        zoomMultiplyer = 1080.0/cropRect.size.width;
+                    }
+                }
+
+                let finalTransform: CGAffineTransform?
+                if (zoomMultiplyer != 0) {
+                    let scaleTransform = CGAffineTransform(scaleX: zoomMultiplyer, y: zoomMultiplyer)
+                    finalTransform = transform.concatenating(translationTransform).concatenating(scaleTransform)
+                } else {
+                    finalTransform = transform.concatenating(translationTransform)
+                }
+
+                layerInstructions.setTransform(finalTransform!, at: CMTime.zero)
+                videoCompositionTrack.preferredTransform = finalTransform!
                 
                 // CompositionInstruction
                 let mainInstructions = AVMutableVideoCompositionInstruction()
@@ -138,11 +163,7 @@ class LibraryMediaManager {
                 let videoComposition = AVMutableVideoComposition(propertiesOf: asset)
                 videoComposition.instructions = [mainInstructions]
 //                videoComposition.renderSize = cropRect.size // needed?
-                if (YPConfig.orientation == 0) {
-                    videoComposition.renderSize = CGSize(width: 1920, height: 1080)
-                } else {
-                    videoComposition.renderSize = CGSize(width: 1080, height: 1920)
-                }
+                videoComposition.renderSize = exportSize
                 
                 // 5. Configuring export session
                 
